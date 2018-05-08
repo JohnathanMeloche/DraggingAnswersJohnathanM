@@ -35,6 +35,7 @@ local loseScore = 0
 -- The background image and soccer ball for this scene
 local bkg_image
 local soccerball
+local bkg_rectangle
 
 --the text that displays the question
 local questionText 
@@ -384,8 +385,15 @@ function scene:create( event )
     bkg_image.width = display.contentWidth
     bkg_image.height = display.contentHeight
 
+
+    bkg_rectangle = display.newRoundedRect(925, 350, 150, 550, 60 )
+    bkg_rectangle:setFillColor (126/255, 211/255, 189/255)
+    bkg_rectangle:setStrokeColor (1, 1, 1)
+    bkg_rectangle.strokeWidth = 8
+
+
     --the text that displays the question
-    questionText = display.newText( "" , 0, 0, nil, 100)
+    questionText = display.newText( "hello" , 0, 0, nil, 100)
     questionText.x = display.contentWidth * 0.3
     questionText.y = display.contentHeight * 0.9
 
@@ -401,6 +409,7 @@ function scene:create( event )
 
     --create answerbox alternate answers and the boxes to show them
     answerbox = display.newText("", display.contentWidth * 0.9, 0, nil, 100)
+    answerbox:toFront()
     alternateAnswerBox1 = display.newText("", display.contentWidth * 0.9, 0, nil, 100)
     alternateAnswerBox2 = display.newText("", display.contentWidth * 0.9, 0, nil, 100)
 
@@ -420,6 +429,7 @@ function scene:create( event )
     ----------------------------------------------------------------------------------
 
     sceneGroup:insert( bkg_image ) 
+    sceneGroup:insert( bkg_rectangle )
     sceneGroup:insert( questionText ) 
     sceneGroup:insert( userAnswerBoxPlaceholder )
     sceneGroup:insert( answerbox )
