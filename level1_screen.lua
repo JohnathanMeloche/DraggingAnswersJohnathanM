@@ -27,6 +27,11 @@ local scene = composer.newScene( sceneName )
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
+local winScore = 0
+local loseScore = 0
+
+
+
 -- The background image and soccer ball for this scene
 local bkg_image
 local soccerball
@@ -66,8 +71,10 @@ local alternateAnswerBox2PreviousX
 local userAnswerBoxPlaceholder
 
 -- sound effects
-local correctSound
-local booSound
+local correctSound = audio.loadSound ("Sounds/Correct.wav")
+local correctSoundPlay
+local booSound = audio.loadSound ("Sounds/boo.mp3")
+local booSoundPlayS
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -182,6 +189,10 @@ local function YouWinTransitionLevel1( )
     composer.gotoScene("you_win", {effect = "fade", time = 500})
 end
 
+local function YouLoseTransitionLevel1()
+    composer.gotoScene("you_lose", {effect = "fade", time = 500})
+end
+
 -- Function to Restart Level 1
 local function RestartLevel1()
     DisplayQuestion()
@@ -192,7 +203,21 @@ end
 -- Function to Check User Input
 local function CheckUserAnswerInput()
           
+    if (userAnswer == correctAnswer) then
+        winScore = winScore + 1
+        correctSoundPlay = audio.play(correctSound)
+        if (winScore == 3) then
+            YouWinTransitionLevel1()
+        end
+    elseif (userAnswer ~= correctAnswer) then
+        loseScore = loseScore + 1
+        booSoundPlay = audio.play(booSound)
+        if (loseScore == 2) then
+            YouLoseTransitionLevel1()
+        end
+    end
     timer.performWithDelay(1600, RestartLevel1) 
+
 end
 
 local function TouchListenerAnswerbox(touch)
@@ -353,7 +378,7 @@ function scene:create( event )
     ----------------------------------------------------------------------------------
 
     -- Insert the background image
-    bkg_image = display.newImageRect("Images/Game Screen.png", 2048, 1536)
+    bkg_image = display.newImageRect("Images/Game Screen2.png", 2048, 1536)
     bkg_image.anchorX = 0
     bkg_image.anchorY = 0
     bkg_image.width = display.contentWidth
@@ -367,7 +392,7 @@ function scene:create( event )
     -- create the soccer ball and place it on the scene
     soccerball = display.newImageRect("Images/soccerball.png", 60, 60, 0, 0)
     soccerball.x = display.contentWidth*0.385
-    soccerball.y = display.contentHeight * 12/20
+    soccerball.y = display.contentHeight * 15.5/20
 
     -- boolean variables stating whether or not the answer was touched
     answerboxAlreadyTouched = false
